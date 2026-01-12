@@ -16,7 +16,7 @@ export const Footer: React.FC = () => {
           
           <div className="text-center md:text-left space-y-6">
             <img 
-              src="https://allurerepresentacoes.com.br/wp-content/uploads/2025/06/allure_branco_edited.png" 
+              src="https://static.wixstatic.com/media/1f17f3_c74aacad78ab41cbbf68badd4a6186cc~mv2.png" 
               alt="Allure Logo" 
               className="h-10 md:h-12 w-auto mx-auto md:mx-0 opacity-100"
             />
@@ -62,7 +62,7 @@ export const Footer: React.FC = () => {
               className="flex items-center gap-2 font-semibold text-slate-400 hover:text-blue-400 transition-colors"
             >
               <img 
-                src="https://allurerepresentacoes.com.br/wp-content/uploads/2026/01/logo-dourada-1.png" 
+                src="https://static.wixstatic.com/media/1f17f3_d04973c55bd945bb9eaf8e5daf5c5197~mv2.png" 
                 alt="UP! Company Logo" 
                 className="h-6 w-auto object-contain"
               />

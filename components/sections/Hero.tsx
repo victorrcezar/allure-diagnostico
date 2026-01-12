@@ -48,7 +48,7 @@ export const Hero: React.FC = () => {
         {/* Brand Logo - Positioned relatively */}
         <div className="absolute top-0 left-4 lg:left-8 -mt-12 lg:-mt-24 z-20">
           <img 
-            src="https://allurerepresentacoes.com.br/wp-content/uploads/2025/06/allure_branco_edited.png" 
+            src="https://static.wixstatic.com/media/1f17f3_c74aacad78ab41cbbf68badd4a6186cc~mv2.png" 
             alt="Allure Logo" 
             className="h-8 md:h-10 lg:h-12 w-auto opacity-100"
             loading="eager"
@@ -108,7 +108,7 @@ export const Hero: React.FC = () => {
              
              {/* Main Person Image */}
              <img 
-               src="https://allurerepresentacoes.com.br/wp-content/uploads/2025/06/douglas_3_edited.png" 
+               src="https://static.wixstatic.com/media/1f17f3_263dada16fd9463b8e8528e4974bdf75~mv2.png" 
                alt="Douglas Maia" 
                className="
                  w-full h-full object-contain object-bottom 
