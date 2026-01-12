@@ -15,7 +15,7 @@ export const Hero: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-[100dvh] lg:min-h-screen flex items-center pt-20 pb-0 lg:py-0 overflow-hidden bg-dark-950">
+    <div className="relative min-h-[100dvh] lg:min-h-screen flex items-center pt-28 pb-0 lg:py-0 overflow-hidden bg-dark-950">
       
       {/* Background Elements - Atmosphere */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -45,22 +45,22 @@ export const Hero: React.FC = () => {
 
       <Container className="grid lg:grid-cols-12 gap-4 lg:gap-12 items-center relative z-10 h-full">
         
-        {/* Brand Logo - Positioned relatively */}
-        <div className="absolute top-0 left-4 lg:left-8 -mt-12 lg:-mt-24 z-20">
+        {/* Brand Logo - Centralized and Tripled in Size */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-20 lg:-mt-32 z-20 w-full flex justify-center pointer-events-none">
           <img 
             src="https://static.wixstatic.com/media/1f17f3_c74aacad78ab41cbbf68badd4a6186cc~mv2.png" 
             alt="Allure Logo" 
-            className="h-8 md:h-10 lg:h-12 w-auto opacity-100"
+            className="h-24 md:h-32 lg:h-40 w-auto opacity-100 drop-shadow-2xl"
             loading="eager"
-            width="200"
-            height="50"
+            width="600"
+            height="150"
           />
         </div>
 
         {/* Text Content - Left Side */}
-        <div className={`lg:col-span-7 flex flex-col justify-center space-y-5 md:space-y-8 text-center lg:text-left transition-all duration-1000 relative z-20 mt-4 lg:mt-0 ${loaded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
+        <div className={`lg:col-span-7 flex flex-col justify-center space-y-5 md:space-y-8 text-center lg:text-left transition-all duration-1000 relative z-20 mt-12 lg:mt-0 ${loaded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
           
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/30 bg-blue-900/20 backdrop-blur-sm mx-auto lg:mx-0 w-fit">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/30 bg-blue-900/20 backdrop-blur-sm mx-auto lg:mx-0 w-fit mt-8 lg:mt-0">
              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
              <span className="text-[10px] md:text-xs font-bold tracking-[0.2em] text-cyan-100 uppercase">Diagnóstico Financeiro</span>
           </div>
