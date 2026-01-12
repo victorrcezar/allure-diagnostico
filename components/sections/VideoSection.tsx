@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Container, Section } from '../ui/Section';
 import { Button } from '../ui/Button';
 import { Play, Pause, Maximize, Gauge } from 'lucide-react';
@@ -6,7 +6,30 @@ import { Play, Pause, Maximize, Gauge } from 'lucide-react';
 export const VideoSection: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1.0);
+  const [shouldLoad, setShouldLoad] = useState(false); // State for lazy loading
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Smart Lazy Load: Only load the video source when the user is close to the section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setShouldLoad(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { rootMargin: '200px' } // Start loading 200px before the section is visible
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const togglePlay = (e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -33,13 +56,17 @@ export const VideoSection: React.FC = () => {
 
   const toggleFullscreen = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (videoRef.current) {
-      if (videoRef.current.requestFullscreen) {
-        videoRef.current.requestFullscreen();
-      } else if ((videoRef.current as any).webkitRequestFullscreen) {
-        (videoRef.current as any).webkitRequestFullscreen();
-      } else if ((videoRef.current as any).msRequestFullscreen) {
-        (videoRef.current as any).msRequestFullscreen();
+    const video = videoRef.current;
+
+    if (video) {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if ((video as any).webkitEnterFullscreen) {
+        (video as any).webkitEnterFullscreen(); // iOS Fix
+      } else if ((video as any).webkitRequestFullscreen) {
+        (video as any).webkitRequestFullscreen();
+      } else if ((video as any).msRequestFullscreen) {
+        (video as any).msRequestFullscreen();
       }
     }
   };
@@ -48,8 +75,12 @@ export const VideoSection: React.FC = () => {
     window.open("https://pay.kiwify.com.br/tTl9ga0", "_blank");
   };
 
+  const videoUrl = "https://video.wixstatic.com/video/1f17f3_902025f9721f451198b9bd1fa4ec07c0/720p/mp4/file.mp4";
+
   return (
-    <Section className="bg-black relative py-12 md:py-24">
+    <Section className="bg-black relative py-12 md:py-24" id="video-section">
+      <div ref={containerRef} className="absolute top-0 w-full h-1"></div>
+      
       {/* Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[60%] bg-blue-900/20 blur-[120px] rounded-full pointer-events-none"></div>
 
@@ -81,50 +112,51 @@ export const VideoSection: React.FC = () => {
                      onPause={() => setIsPlaying(false)}
                      onPlay={() => setIsPlaying(true)}
                      playsInline
+                     preload={shouldLoad ? "auto" : "none"} // Critical optimization
+                     src={shouldLoad ? videoUrl : undefined} // Only load source when needed
                    >
-                     <source src="https://video.wixstatic.com/video/1f17f3_902025f9721f451198b9bd1fa4ec07c0/720p/mp4/file.mp4" type="video/mp4" />
                      Seu navegador não suporta a tag de vídeo.
                    </video>
 
                    {/* Main Play Button Overlay */}
                    {!isPlaying && (
-                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 pointer-events-none">
+                     <div className="absolute inset-0 bg-black/30 flex items-center justify-center transition-opacity duration-300 pointer-events-none z-20">
                         <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-[0_0_30px_rgba(255,255,255,0.2)] group-hover:scale-110 transition-transform duration-300">
                            <Play className="w-6 h-6 md:w-8 md:h-8 text-white fill-white ml-1" />
                         </div>
                      </div>
                    )}
 
-                   {/* Custom Control Bar */}
+                   {/* Custom Control Bar - Improved for Mobile Touch */}
                    <div 
-                     className="absolute bottom-0 left-0 right-0 p-3 md:p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent flex items-center justify-between opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 z-20"
+                     className="absolute bottom-0 left-0 right-0 p-3 md:p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent flex items-center justify-between z-30 opacity-100 transition-opacity duration-300"
                      onClick={(e) => e.stopPropagation()}
                    >
-                     <div className="flex items-center gap-2 md:gap-4">
+                     <div className="flex items-center gap-3 md:gap-4">
                        <button 
                          onClick={togglePlay} 
-                         className="p-1.5 md:p-2 rounded-full hover:bg-white/10 text-white hover:text-blue-400 transition-all"
+                         className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white transition-all active:scale-95"
                          title={isPlaying ? "Pausar" : "Reproduzir"}
                        >
-                         {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
+                         {isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" />}
                        </button>
                        
                        <button 
                          onClick={changeSpeed}
-                         className="flex items-center gap-1 px-2 py-1 md:px-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 text-[10px] md:text-xs font-bold text-white transition-all w-16 md:w-20 justify-center"
-                         title="Velocidade de Reprodução"
+                         className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/10 text-xs font-bold text-white transition-all min-w-[60px] justify-center active:scale-95"
+                         title="Velocidade"
                        >
-                         <Gauge size={12} />
+                         <Gauge size={14} />
                          {playbackRate}x
                        </button>
                      </div>
 
                      <button 
                        onClick={toggleFullscreen}
-                       className="p-1.5 md:p-2 rounded-full hover:bg-white/10 text-white hover:text-blue-400 transition-all"
+                       className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white transition-all active:scale-95"
                        title="Tela Cheia"
                      >
-                       <Maximize size={18} />
+                       <Maximize size={20} />
                      </button>
                    </div>
                 </div>

@@ -25,6 +25,8 @@ export const About: React.FC = () => {
                   src="https://allurerepresentacoes.com.br/wp-content/uploads/2025/06/Post-para-instagram-de-contabilidade-cinza-e-branco-2.jpg" 
                   alt="Douglas Maia" 
                   className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                  decoding="async"
                 />
                 
                 {/* Professional Overlay */}
